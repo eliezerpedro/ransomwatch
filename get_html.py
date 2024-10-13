@@ -13,6 +13,7 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class GetHtml:
     def __init__(self, json_file='groups.json', days=7):
         self.json_file = json_file
@@ -24,7 +25,8 @@ class GetHtml:
         with open(self.json_file, 'r') as file:
             data = json.load(file)
 
-        self.df = pd.DataFrame.from_dict(data, orient='index').explode('online_links')
+        self.df = pd.DataFrame.from_dict(
+            data, orient='index').explode('online_links')
         self.df.reset_index(inplace=True)
         self.df.columns = ['grupo', 'link_grupo', 'links_online']
 
@@ -50,12 +52,13 @@ class GetHtml:
             r'\d{8}',                       # AAAAMMDD
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}',  # ISO 8601
             r'\w+ de \d{4}',                # Mês por Extenso e Ano
-            r'\w+ \d{1,2}(?:st|nd|rd|th), \d{4}', # Mês e Dia por Extenso
+            r'\w+ \d{1,2}(?:st|nd|rd|th), \d{4}',  # Mês e Dia por Extenso
             r'\d{4}\w{3}\d{2}',             # AAAA-MêsAbreviado-DD
             r'\d{2}/\d{2}/\d{2}',           # Dia/Mês/Ano Abreviado
             r'\w{3}, \d{4}',                # Mês Abreviado e Ano
             r'\d{4}-\d{2}',                 # Ano e Mês
-            r'\d{4}, \w{3} \d{1,2}(?:st|nd|rd|th)', # Ano, Mês Abreviado e Dia por Extenso
+            # Ano, Mês Abreviado e Dia por Extenso
+            r'\d{4}, \w{3} \d{1,2}(?:st|nd|rd|th)',
             r'\d{2}\.\d{2}\.\d{4}',         # Formato Alemão
             r'\d{4}年\d{1,2}月\d{1,2}日',   # Formato Chinês
         ]
@@ -101,7 +104,8 @@ class GetHtml:
                     self.df.at[index, 'datas'] = datas
                     self.df.at[index, 'qtd_datas'] = len(datas)
                 else:
-                    logger.warning(f"Status {response.status_code} ao acessar {url}")
+                    logger.warning(
+                        f"Status {response.status_code} ao acessar {url}")
 
             except requests.RequestException as e:
                 logger.error(f"Erro ao acessar {url}: {e}")

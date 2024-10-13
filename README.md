@@ -54,6 +54,7 @@ Esse desafio usa bibliotecas como BeautifulSoup, requests e pandas para coletar 
 2. Crie a imagem Docker e execute o container
 ```bash
 
+cd tor-docker
 docker build -t meu_tor_container .
 docker run -d --name meu_container_tor meu_tor_container
 

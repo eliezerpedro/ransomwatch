@@ -9,6 +9,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 # Configuração do logger
 logging.basicConfig(level=logging.INFO)
 
+
 class DataFrameToMarkdownPDF:
     def __init__(self, pdf_filename='report.pdf'):
         self.pdf_filename = pdf_filename
@@ -19,9 +20,11 @@ class DataFrameToMarkdownPDF:
             grouped_data[item['grupo']].append(item)
 
         for grupo, items in grouped_data.items():
-            grouped_data[grupo] = sorted(items, key=lambda x: x['date'], reverse=True)
+            grouped_data[grupo] = sorted(
+                items, key=lambda x: x['date'], reverse=True)
 
-        sorted_groups = sorted(grouped_data.items(), key=lambda x: len(x[1]), reverse=True)
+        sorted_groups = sorted(grouped_data.items(),
+                               key=lambda x: len(x[1]), reverse=True)
 
         return sorted_groups
 
@@ -37,7 +40,7 @@ class DataFrameToMarkdownPDF:
             fontSize=16,
             spaceAfter=14,
             textColor=colors.darkblue,
-            alignment=1 
+            alignment=1
         )
         description_style = ParagraphStyle(
             'description_style',
@@ -76,16 +79,18 @@ class DataFrameToMarkdownPDF:
         elements.append(description)
         elements.append(Spacer(1, 0.5 * inch))
 
-        elements.append(Paragraph("Segue os dados coletados no intervalo de tempo solicitado, separados por grupos de forma decrescente:", description_style))
+        elements.append(Paragraph(
+            "Segue os dados coletados no intervalo de tempo solicitado, separados por grupos de forma decrescente:", description_style))
         elements.append(Spacer(1, 0.5 * inch))
 
         for grupo, items in sorted_groups:
             count_items = len(items)
 
-            elements.append(Paragraph(f"Grupo: {grupo} - {count_items} resultados encontrados", group_style))
+            elements.append(Paragraph(
+                f"Grupo: {grupo} - {count_items} resultados encontrados", group_style))
             elements.append(Spacer(1, 0.1 * inch))
 
-            table_data = [['Title', 'Site', 'Date']]  
+            table_data = [['Title', 'Site', 'Date']]
             for item in items:
                 title = item.get('title', 'N/A')
                 site = item.get('site', 'N/A')
@@ -93,16 +98,17 @@ class DataFrameToMarkdownPDF:
                 table_data.append([title, site, date])
 
             # Estilizar a tabela
-            table = Table(table_data, colWidths=[2.5 * inch, 2 * inch, 1.5 * inch])
+            table = Table(table_data, colWidths=[
+                          2.5 * inch, 2 * inch, 1.5 * inch])
             table.setStyle(TableStyle([
-                ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),  
-                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),  
-                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  
-                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  
-                ('FONTSIZE', (0, 0), (-1, 0), 12),  
-                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  
-                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),  
-                ('GRID', (0, 0), (-1, -1), 1, colors.black), 
+                ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 12),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
             ]))
 
             elements.append(table)

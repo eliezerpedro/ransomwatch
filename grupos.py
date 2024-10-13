@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import json
 
+
 class Grupos:
     def __init__(self, days):
         self.days = days
@@ -49,7 +50,8 @@ class Grupos:
             if data_publicacao and self._is_date_within_range(data_publicacao):
                 h5 = div.find_previous('h5')
                 title = h5.text.strip() if h5 else 'Título não encontrado'
-                results.append({'title': title, 'site': '', 'date': data_texto})
+                results.append(
+                    {'title': title, 'site': '', 'date': data_texto})
 
         return results
 
@@ -61,14 +63,17 @@ class Grupos:
             title = th.contents[0].strip()
             link_div = th.find('i', class_='link')
             link = link_div.next_sibling.strip() if link_div and link_div.next_sibling else None
-            
-            publication_date_div = th.find(string=lambda text: text and 'publication date:' in text)
-            publication_date = publication_date_div.strip().split(':')[-1].strip() if publication_date_div else None
-            
+
+            publication_date_div = th.find(
+                string=lambda text: text and 'publication date:' in text)
+            publication_date = publication_date_div.strip().split(
+                ':')[-1].strip() if publication_date_div else None
+
             if publication_date:
                 pub_date = self._parse_date(publication_date)
                 if pub_date and self._is_date_within_range(pub_date):
-                    data_rows.append({'title': title, 'site': link, 'date': publication_date})
+                    data_rows.append(
+                        {'title': title, 'site': link, 'date': publication_date})
 
         return data_rows
 
@@ -83,10 +88,13 @@ class Grupos:
                 date_str = time_tag.get('datetime').split('T')[0]
                 date_obj = self._parse_date(date_str)
                 if date_obj and self._is_date_within_range(date_obj):
-                    description = li.find('p', class_='wp-block-post-excerpt__excerpt').text
-                    site_match = re.search(r'\b(?:https?://|www\.)?([\w.-]+(?:\.[a-z]{2,}))\b', description)
+                    description = li.find(
+                        'p', class_='wp-block-post-excerpt__excerpt').text
+                    site_match = re.search(
+                        r'\b(?:https?://|www\.)?([\w.-]+(?:\.[a-z]{2,}))\b', description)
                     site = site_match.group(0) if site_match else None
-                    results.append({'title': title, 'site': site, 'date': date_str})
+                    results.append(
+                        {'title': title, 'site': site, 'date': date_str})
 
         return results
 
@@ -98,6 +106,7 @@ class Grupos:
         for td in soup.find_all('td'):
             data = self._parse_date(td.get_text(), '%Y-%m-%d %H:%M')
             if data and self._is_date_within_range(data):
-                resultados.append({'title': nome_empresa, 'site': '', 'date': td.get_text()})
+                resultados.append(
+                    {'title': nome_empresa, 'site': '', 'date': td.get_text()})
 
         return resultados

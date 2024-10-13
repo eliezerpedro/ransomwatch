@@ -7,11 +7,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class GetOnlineUrls:
     def __init__(self, base_url):
         self.base_url = base_url
         self.logger = logging.getLogger(__name__)
-        logging.basicConfig(level=logging.INFO, 
+        logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s - %(levelname)s - %(message)s')
 
     def fetch_page_content(self, url):
@@ -87,6 +88,7 @@ class GetOnlineUrls:
         groups = self.generate_groups_dict()
         groups_with_links = self.extract_online_links(groups)
         self.save_to_json(groups_with_links)
+
 
 if __name__ == "__main__":
     BASE_URL = os.getenv('BASE_URL')
