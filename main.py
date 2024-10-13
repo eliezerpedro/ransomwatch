@@ -93,7 +93,7 @@ class Main:
             return scraper_methods[grupo](html_content)
         else:
             logging.warning(
-                f"Grupo '{grupo}' ainda não possui um scraper específico. Link para obter o html: {row['links_online']}")
+                f"Grupo '{grupo}' ainda não possui um scraper específico.")
             return []
 
     def send_email(self):
