@@ -8,10 +8,8 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-# Carregar variáveis de ambiente do arquivo .env
 load_dotenv()
 
-# Configurar o logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -30,7 +28,6 @@ class GetHtml:
         self.df.reset_index(inplace=True)
         self.df.columns = ['grupo', 'link_grupo', 'links_online']
 
-        # Adiciona colunas para armazenar resultados
         self.df['response_status_code'] = None
         self.df['html'] = None
         self.df['infos'] = None
@@ -70,7 +67,6 @@ class GetHtml:
             found_dates = re.findall(pattern, text)
             dates.extend(found_dates)
 
-        # Filtrar datas para mostrar apenas os últimos dias especificados
         collected_dates = []
         for date_str in dates:
             for fmt in ['%Y-%m-%d', '%d/%m/%Y', '%d de %B de %Y', '%Y.%m.%d', '%B %d, %Y']:

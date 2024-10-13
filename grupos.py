@@ -21,8 +21,6 @@ class Grupos:
         return self.limite <= date_obj <= self.hoje
 
     def ransomhouse(self, html_content):
-        """Filtra as entradas com actionDate dentro dos últimos 'days' dias."""
-
         json_data = json.loads(html_content)
         filtered_data = []
 
@@ -41,7 +39,6 @@ class Grupos:
         return filtered_data
 
     def monti(self, html_content):
-        """Extrai informações do HTML com base nas datas publicadas."""
         soup = BeautifulSoup(html_content, 'html.parser')
         results = []
 
@@ -57,7 +54,6 @@ class Grupos:
         return results
 
     def play(self, html_content):
-        """Coleta dados de notícias do HTML fornecido."""
         soup = BeautifulSoup(html_content, 'html.parser')
         data_rows = []
 
@@ -77,7 +73,6 @@ class Grupos:
         return data_rows
 
     def handala(self, html_content):
-        """Extrai informações do HTML de uma lista de postagens."""
         soup = BeautifulSoup(html_content, 'html.parser')
         results = []
 
@@ -96,7 +91,6 @@ class Grupos:
         return results
 
     def blackbyte(self, html):
-        """Coleta dados de datas de uma tabela no HTML fornecido."""
         soup = BeautifulSoup(html, 'html.parser')
         nome_empresa = soup.find('caption', class_='target-name').get_text()
         resultados = []
