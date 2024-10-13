@@ -88,6 +88,8 @@ EMAIL_SENDER=email do usuário
 
 EMAIL_RECIPIENT=email do destinatário
 
+GERAR_PDF=(YES or NO)
+
 ```
 
 5. Execute o script

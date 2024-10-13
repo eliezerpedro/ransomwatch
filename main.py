@@ -17,6 +17,7 @@ class Main:
         load_dotenv()
         self.BASE_URL = os.getenv('BASE_URL')
         self.DAYS = self.load_days()
+        self.GERAR_PDF = os.getenv('GERAR_PDF')
 
         # Inicializar classes
         self.url_scraper = GetOnlineUrls(self.BASE_URL)
@@ -37,15 +38,15 @@ class Main:
     def run(self):
         """Executa o fluxo principal da aplicação."""
         self.scrape_urls()
-        df = self.get_html.run()
-        df_to_analyze = self.prepare_dataframe(df)
-        data = self.processar_grupos(df_to_analyze)
-
-        # Gerar PDF
-        self.pdf_generator.generate_pdf(data, df)
-
-        # Enviar email com os arquivos gerados
-        self.send_email()
+        
+        if self.GERAR_PDF == 'YES':
+            df = self.get_html.run()
+            df_to_analyze = self.prepare_dataframe(df)
+            data = self.processar_grupos(df_to_analyze)
+            self.pdf_generator.generate_pdf(data, df)
+            self.send_email()
+        else:
+            logging.info("Base de URL atualizada com sucesso e salva no arquivo groups.json")
 
     def scrape_urls(self):
         """Obtém as URLs online e as salva."""
